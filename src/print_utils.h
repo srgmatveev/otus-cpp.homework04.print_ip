@@ -1,6 +1,8 @@
 //
 // Created by sergio on 01.08.18.
 //
+/** @file print_utils.h*/
+
 #pragma once
 
 
@@ -8,27 +10,52 @@
 #include <tuple>
 #include <ostream>
 #include <iterator>
-
+/**
+  * @addtogroup print_tuple
+  * @{
+  */
+/**
+ * @brief structure for size_t in print_tuple
+ */
 template<size_t> struct int_{};
-
+/**
+ * @brief print tuple variadic
+ * @tparam Tuple
+ * @tparam Pos - tuple member index
+ * @param out - std::ostream&
+ * @param t - tuple
+ * @return std::ostream&
+ */
 template <class Tuple, size_t Pos>
 std::ostream& print_tuple(std::ostream& out, const Tuple& t, int_<Pos> ) {
     out << std::get< std::tuple_size<Tuple>::value-Pos >(t) << '.';
     return print_tuple(out, t, int_<Pos-1>());
 }
-
+/**
+ * @brief print tuple end recursion for print tuple variadic
+ * @tparam Tuple
+ * @param out - std::ostream&
+ * @param t - tuple
+ * @return - std::ostream&
+ */
 template <class Tuple>
 std::ostream& print_tuple(std::ostream& out, const Tuple& t, int_<1> ) {
     return out << std::get<std::tuple_size<Tuple>::value-1>(t);
 }
-
+/**
+ * @brief overload std::ostream& operator<< for tuple
+ * @tparam Ts - tuple params
+ * @param out - std::ostream&
+ * @param tuple
+ * @return - std::ostream&
+ */
 template <typename... Ts>
 std::ostream& operator<<(std::ostream &out, const std::tuple<Ts...> &tuple){
 
     print_tuple(out,tuple, int_<sizeof...(Ts)>());
     return out;
 }
-
+// @} group print_tuple
 
 //!!!next all copy from gcc stream_iterator.h and simple modified like infix_iterator!!!
 /**
@@ -43,8 +70,11 @@ class istream_iterator
 : public std::iterator<std::input_iterator_tag, _Tp, _Dist, const _Tp*, const _Tp&>
 {
 public:
+    /// delemiter symbol
     typedef _CharT                         char_type;
+    /// Traits type
     typedef _Traits                        traits_type;
+    /// istream type
     typedef std::basic_istream<_CharT, _Traits> istream_type;
 
 private:
@@ -61,39 +91,42 @@ public:
     istream_iterator(istream_type& __s)
             : _M_stream(&__s)
     { _M_read(); }
-
+    /// copy constructor
+    /// \param __obj
     istream_iterator(const istream_iterator& __obj)
             : _M_stream(__obj._M_stream), _M_value(__obj._M_value),
               _M_ok(__obj._M_ok)
     { }
-
+    /// Returns a reference to the element pointed to by the iterator.
     const _Tp&
     operator*() const
     {
-
         return _M_value;
     }
-
+    /// The member access operator
+    /// \return
     const _Tp*
     operator->() const { return &(operator*()); }
-
+    ///Prefix increment operator.
     istream_iterator&
     operator++()
     {
-
         _M_read();
         return *this;
     }
-
+    /// Postfix increment operator.
     istream_iterator
     operator++(int)
     {
-
         istream_iterator __tmp = *this;
         _M_read();
         return __tmp;
     }
-
+   /**
+    * @brief compare this and another class instance
+    * @param __x - class instance
+    * @return
+    */
     bool
     _M_equal(const istream_iterator& __x) const
     { return (_M_ok == __x._M_ok) && (!_M_ok || _M_stream == __x._M_stream); }
@@ -186,14 +219,17 @@ public:
         return *this;
     }
 
+    /// Returns a reference to the element pointed to by the iterator.
     fix_ostream_iterator&
     operator*()
     { return *this; }
 
+    ///Prefix increment operator.
     fix_ostream_iterator&
     operator++()
     { return *this; }
 
+    ///Postfix increment operator
     fix_ostream_iterator&
     operator++(int)
     { return *this; }

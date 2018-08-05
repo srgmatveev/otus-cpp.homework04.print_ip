@@ -1,5 +1,5 @@
 #include <iostream>
-#include "print_ip.h"
+#include "src/print_ip.h"
 #include <tuple>
 
 int main() {
@@ -19,8 +19,6 @@ print_ip(ip_address_str);
 print_ip(ip_vector);
 print_ip(ip_list);
 print_ip(ip_tuple);
-
-
 
 return 0;
 }
