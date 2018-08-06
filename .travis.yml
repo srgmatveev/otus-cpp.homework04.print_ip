@@ -4,55 +4,54 @@ dist: trusty
 
 before_install:
 #  # C++14
-  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-  - sudo apt-get update -qq
-  - sudo apt-get install doxygen -y
-  - sudo apt-get install graphviz -y
+- sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+- sudo apt-get update -qq
+- sudo apt-get install doxygen -y
+
 #  # C++14
-  - sudo apt-get install -qq g++-6
-  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
+- sudo apt-get install -qq g++-6
+- sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
+
 before_script:
-#  - sudo apt-get install libboost-test-dev -y
-#  - sudo apt-get install libgtest-dev -y
-#  - sudo apt-get install google-mock -y
-  - sudo apt-get install git -y
-  - sudo apt-get install cmake -y
+- sudo apt-get install git -y
+- sudo apt-get install cmake -y
 
 script:
-  - "MYHOME=`pwd`"
-  - sudo mkdir /usr/src/googletest
-  - sudo git clone "https://github.com/google/googletest.git" /usr/src/googletest
+- "MYHOME=`pwd`"
+- sudo mkdir /usr/src/googletest
+- sudo git clone "https://github.com/google/googletest.git" /usr/src/googletest
 
-  - cd /usr/src/googletest/googletest
-  - sudo cmake CMakeLists.txt
-  - sudo make
-  - sudo cp *.a /usr/lib
-  - sudo mkdir -p /usr/include/gtest
-  - sudo cp  -rp  /usr/src/googletest/googletest/include/* /usr/include/
+- cd /usr/src/googletest/googletest
+- sudo cmake CMakeLists.txt
+- sudo make
+- sudo cp *.a /usr/lib
+- sudo mkdir -p /usr/include/gtest
+- sudo cp  -rp  /usr/src/googletest/googletest/include/* /usr/include/
 
-  - cd /usr/src/googletest/googlemock
-  - sudo cmake CMakeLists.txt
-  - sudo make
-  - sudo cp *.a /usr/lib
-  - sudo mkdir -p /usr/include/gmock
-  - sudo cp  -rp  /usr/src/googletest/googlemock/include/* /usr/include/
+- cd /usr/src/googletest/googlemock
+- sudo cmake CMakeLists.txt
+- sudo make
+- sudo cp *.a /usr/lib
+- sudo mkdir -p /usr/include/gmock
+- sudo cp  -rp  /usr/src/googletest/googlemock/include/* /usr/include/
 
-  - cd "${MYHOME}"
-  - cmake .
-  - cmake --build .
- # - cmake --build . --target test
-  - cmake --build . --target package
-  - doxygen
+
+
+- cd "${MYHOME}"
+- cmake .
+- cmake --build .
+- cmake --build . --target test
+- cmake --build . --target package
 deploy:
-  - provider: pages
-    skip-cleanup: true
-    github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-    keep-history: true
-   on:
-     branch: master
-  - provider: script
-    skip_cleanup: true
-    script:
-    - curl -T print_ip-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb -usrgmatveev:$BINTRAY_API_KEY "https://api.bintray.com/content/srgmatveev/otus-cpp/print_ip/$TRAVIS_BUILD_NUMBER/print_ip-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
+  provider: script
+  skip_cleanup: true
+  script:
+  - curl -T print_ip-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb -usrgmatveev:$BINTRAY_API_KEY "https://api.bintray.com/content/srgmatveev/otus-cpp/print_ip/$TRAVIS_BUILD_NUMBER/print_ip-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
 
-
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep-history: true
+  on:
+    branch: master
