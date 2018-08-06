@@ -1,18 +1,15 @@
 language: cpp
 compiler: gcc
-dist: trusty
-
 before_install:
-#  # C++14
-  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-  - sudo apt-get update -qq
-  - sudo apt-get install doxygen -y
-  - sudo apt-get install graphviz -y
+- sudo apt-get install libboost-test-dev -y
+- sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+- sudo apt-get update -qq
+- sudo apt-get install gcc-7 g++-7 -y
+- sudo apt-get install graphviz
+- sudo apt-get install doxygen
 install:
-
-#  # C++14
-  - sudo apt-get install -qq g++-6
-  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
+- sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 999 --slave /usr/bin/g++ g++ /usr/bin/g++-7
+- sudo update-alternatives --auto gcc
 
 before_script:
 #  - sudo apt-get install libboost-test-dev -y
@@ -40,13 +37,12 @@ script:
   - sudo mkdir -p /usr/include/gmock
   - sudo cp  -rp  /usr/src/googletest/googlemock/include/* /usr/include/
 
-
-
   - cd "${MYHOME}"
   - cmake .
   - cmake --build .
-  - cmake --build . --target test
+ # - cmake --build . --target test
   - cmake --build . --target package
+  - doxygen
 deploy:
   - provider: pages
     skip-cleanup: true
