@@ -13,31 +13,31 @@ before_install:
 - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
 
 before_script:
-- sudo apt-get install git -y
-- sudo apt-get install cmake -y
+#- sudo apt-get install git -y
+#- sudo apt-get install cmake -y
 
 script:
-- "MYHOME=`pwd`"
-- sudo mkdir /usr/src/googletest
-- sudo git clone "https://github.com/google/googletest.git" /usr/src/googletest
+#- "MYHOME=`pwd`"
+#- sudo mkdir /usr/src/googletest
+#- sudo git clone "https://github.com/google/googletest.git" /usr/src/googletest
 
-- cd /usr/src/googletest/googletest
-- sudo cmake CMakeLists.txt
-- sudo make
-- sudo cp *.a /usr/lib
-- sudo mkdir -p /usr/include/gtest
-- sudo cp  -rp  /usr/src/googletest/googletest/include/* /usr/include/
+#- cd /usr/src/googletest/googletest
+#- sudo cmake CMakeLists.txt
+#- sudo make
+#- sudo cp *.a /usr/lib
+#- sudo mkdir -p /usr/include/gtest
+#- sudo cp  -rp  /usr/src/googletest/googletest/include/* /usr/include/
 
-- cd /usr/src/googletest/googlemock
-- sudo cmake CMakeLists.txt
-- sudo make
-- sudo cp *.a /usr/lib
-- sudo mkdir -p /usr/include/gmock
-- sudo cp  -rp  /usr/src/googletest/googlemock/include/* /usr/include/
+#- cd /usr/src/googletest/googlemock
+#- sudo cmake CMakeLists.txt
+#- sudo make
+#- sudo cp *.a /usr/lib
+#- sudo mkdir -p /usr/include/gmock
+#- sudo cp  -rp  /usr/src/googletest/googlemock/include/* /usr/include/
 
 
 
-- cd "${MYHOME}"
+#- cd "${MYHOME}"
 - cmake .
 - cmake --build .
 #- cmake --build . --target test
@@ -52,6 +52,6 @@ deploy:
    skip-cleanup: true
    github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
    keep-history: true
-   local_dir: $TRAVIS_BUILD_DIR/docs/html
+   local_dir: $TRAVIS_BUILD_DIR//build/docs/html
    on:
     branch: master
