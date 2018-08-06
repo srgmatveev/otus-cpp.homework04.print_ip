@@ -1,7 +1,9 @@
 //
 // Created by sergio on 01.08.18.
 //
-/** @file print_utils.h*/
+/** @file print_utils.h
+ * @brief Contains ostream_iterator for std::copy and variadic templates for print tuple
+ * */
 
 #pragma once
 
@@ -10,6 +12,7 @@
 #include <tuple>
 #include <ostream>
 #include <iterator>
+/// variadic templates for print tuple
 /**
   * @addtogroup print_tuple
   * @{
@@ -57,7 +60,7 @@ std::ostream& operator<<(std::ostream &out, const std::tuple<Ts...> &tuple){
 }
 // @} group print_tuple
 
-//!!!next all copy from gcc stream_iterator.h and simple modified like infix_iterator!!!
+///!!!next all copy from gcc stream_iterator.h and simple modified like infix_iterator!!!
 /**
   * @addtogroup iterators
   * @{

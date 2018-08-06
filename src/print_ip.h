@@ -1,7 +1,9 @@
 //
 // Created by sergio on 31.07.18.
 //
-/** @file print_ip.h */
+/** @file print_ip.h
+ * @brief Contains print_ip realization
+ */
 
 #pragma once
 
@@ -11,14 +13,16 @@
 #include <type_traits>
 #include "traits.h"
 #include "print_utils.h"
+/// print ip realization
 /**
   * @addtogroup print_ip
   * @{
   */
 /**
- * @brief print ip address for std::is_integral type
- * @tparam T
- * @param ip - ip address
+ * std::enable_if_t<std::is_integral<T>::value>* =nullptr
+ * (print ip address for std::is_integral type)
+ *  @tparam T
+ * @param[in] ip - ip address
  */
 template<typename T,
          std::enable_if_t<std::is_integral<T>::value>* =nullptr>
@@ -38,9 +42,10 @@ void print_ip(const T &ip) {
 }
 
 /**
- * @brief print ip address for stl sequence container
+ * std::enable_if_t<is_stl_sequence_container<T>::value>* =nullptr
+ * (print ip address for stl sequence container)
  * @tparam T
- * @param ip - ip address
+ * @param[in] ip - ip address
  */
 template <typename T,
          std::enable_if_t<is_stl_sequence_container<T>::value>* =nullptr>
@@ -52,9 +57,10 @@ void print_ip(const T &ip)
     std::cout << std::endl;
 }
 /**
- * @brief print ip address for std::string type
+ * std::enable_if_t<is_string<T>::value>* = nullptr
+ * (print ip address for std::string type)
  * @tparam T
- * @param ip - ip address
+ * @param[in] ip - ip address
  */
 template<typename T,
          std::enable_if_t<is_string<T>::value>* = nullptr>
@@ -62,9 +68,10 @@ void print_ip(const T& ip) {
     std::cout<<ip<<std::endl;
 }
 /**
- * @brief print ip address for tuple homogeneous type
+ * std::enable_if_t<is_tuple_same_types<T>::value>* = nullptr
+ * (print ip address for tuple homogeneous type)
  * @tparam T
- * @param ip - ip address
+ * @param[in] ip - ip address
  */
 template<typename T,
         std::enable_if_t<is_tuple_same_types<T>::value>* = nullptr>
@@ -72,9 +79,15 @@ void print_ip(const T& ip) {
     std::cout<<ip<<std::endl;
 }
 /**
- * @brief stub for "print" ip address for any other types
+ * std::enable_if_t<
+ *               !(std::is_integral<T>::value ||
+ *               is_string<T>::value||
+ *               is_stl_sequence_container<T>::value ||
+ *               is_tuple_same_types<T>::value)
+ *               >* = nullptr
+ * (stub for "print" ip address for any other types)
  * @tparam T
- * @param ip - ip address
+ * @param[in] ip - ip address
  */
 template< typename T,
         std::enable_if_t<

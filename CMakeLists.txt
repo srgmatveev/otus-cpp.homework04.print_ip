@@ -1,10 +1,12 @@
 cmake_minimum_required(VERSION 3.9)
-
+set(VERSION_MAJOR 0)
+set(VERSION_MINOR 0)
+set(VERSION_PATCH 1)
 if($ENV{TRAVIS_BUILD_NUMBER})
-    project(print_ip VERSION 0.0.$ENV{TRAVIS_BUILD_NUMBER})
-else()
-    project(print_ip VERSION 0.0.1)
+    set(VERSION_PATCH $ENV{TRAVIS_BUILD_NUMBER})
 endif()
+
+project(print_ip VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
 
 set(SOURCE_FILES main.cpp src/print_ip.h src/print_utils.h src/traits.h)
 add_executable(${CMAKE_PROJECT_NAME} ${SOURCE_FILES})
