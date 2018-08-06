@@ -7,6 +7,8 @@ if($ENV{TRAVIS_BUILD_NUMBER})
 endif()
 
 project(print_ip VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
+set(SRC_DIR "./src")
+include_directories(${SRC_DIR} ${BIN_INC_DIR})
 
 set(SOURCE_FILES main.cpp src/print_ip.h src/print_utils.h src/traits.h)
 add_executable(${CMAKE_PROJECT_NAME} ${SOURCE_FILES})
@@ -16,6 +18,10 @@ set_target_properties(${CMAKE_PROJECT_NAME}  PROPERTIES
         CXX_STANDARD_REQUIRED ON
         COMPILE_OPTIONS -Wpedantic -Wall -Wextra
         )
+
+add_subdirectory(tests)
+enable_testing()
+add_test(gtest_valid_version ./tests/unit_tests/Unit_Tests_run)
 
 install(TARGETS ${CMAKE_PROJECT_NAME} RUNTIME DESTINATION bin)
 

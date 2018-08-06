@@ -168,8 +168,7 @@ struct is_all_same  {
 
     /// value return true if exist one parameter. If exist null parameters, then return false.
     static constexpr const bool value = sizeof...(Types)!=0;
-
-};
+    };
 /**
  * @brief check what two params is same
  * @tparam T - first param
@@ -194,21 +193,39 @@ struct is_all_same<T, B1, Bn...> {
 };
 
 
-//tuple with all same types
+////tuple with all same types
+
 /**
 * @brief Implemented for all params at tuple is same
-* @tparam T
+* @tpara T
 */
 template<typename T>
-struct is_tuple_same_types_impl : std::false_type {};
+struct is_tuple_same_types_impl :  std::false_type {};
+
+/**
+ * @brief Implemented for one or zero params at tuple is same
+ * @tparams Ts
+ */
+template<typename... Ts>
+struct is_tuple_same_types_impl<std::tuple<Ts...>> : is_all_same<Ts...>{};
+
+/**
+ * @brief Implemented for all params at tuple is same
+ * @tparam Head - first pasrameter
+ * @tparam B1 - second parameter
+ */
+template<typename Head,  typename B1>
+struct is_tuple_same_types_impl<std::tuple<Head, B1>> : is_all_same<Head, B1> {};
+
+
 /**
  * @brief Implemented for all params at tuple is same
  * @tparam Head - first pasrameter
  * @tparam B1 - second parameter
  * @tparam Bn - pack
  */
-template<typename Head, typename B1,  typename... Bn>
-struct is_tuple_same_types_impl<std::tuple<Head, B1, Bn...>> : is_all_same<Head, B1, Bn...> {};
+ template<typename Head, typename B1,  typename... Bn>
+ struct is_tuple_same_types_impl<std::tuple<Head, B1, Bn...>> : is_all_same<Head, B1, Bn...> {};
 
 /**
  * @brief structure for check what all parameters in pack is same
